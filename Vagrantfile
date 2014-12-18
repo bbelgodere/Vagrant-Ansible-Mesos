@@ -48,8 +48,10 @@ Vagrant.configure(2) do |config|
             ansible.groups = {
                 "master_nodes" => ["mesosmaster1", "mesosmaster2", "mesosmaster3"],
                 "slave_nodes" => ["mesosslave1", "mesosslave2", "mesosslave3"],
+                "all_groups:children" => [ "master_nodes", "slave_nodes"]
             }
-            ansible.playbook = "/ansible/cluster.yml"
+            ansible.playbook = "ansible/cluster.yml"
+            
             ansible.verbose = "v"
             # Disable default limit (required with Vagrant 1.5+)
             ansible.limit = 'all'
