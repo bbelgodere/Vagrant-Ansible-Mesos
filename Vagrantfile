@@ -14,40 +14,40 @@ Vagrant.configure(2) do |config|
         vb.customize ["modifyvm", :id, "--cpus", "1"]
     end
 
-    config.vm.define "mesosmaster1" do |mesosmaster1|
-        mesosmaster1.vm.hostname = "mesos-master1"
-        mesosmaster1.vm.network "private_network", ip: "192.168.10.1"
-        #amb0.vm.provision :shell, path: "launch-amb-master.sh"
+    config.vm.define "master1" do |master1|
+        master1.vm.hostname = "master1"
+        master1.vm.network "private_network", ip: "192.0.2.1"
+        #master1.vm.provision :shell, path: "launch-amb-master.sh"
     end
-    config.vm.define "mesosmaster2" do |mesosmaster2|
-        mesosmaster2.vm.hostname = "mesos-master2"
-        mesosmaster2.vm.network "private_network", ip: "192.168.10.2"
-        #amb0.vm.provision :shell, path: "launch-amb-master.sh"
+    config.vm.define "master2" do |master2|
+        master2.vm.hostname = "-master2"
+        master2.vm.network "private_network", ip: "192.0.2.2"
+        #master2.vm.provision :shell, path: "launch-amb-master.sh"
     end
-    config.vm.define "mesosmaster3" do |mesosmaster3|
-        mesosmaster3.vm.hostname = "mesos-master3"
-        mesosmaster3.vm.network "private_network", ip: "192.168.10.3"
-        #amb0.vm.provision :shell, path: "launch-amb-master.sh"
+    config.vm.define "master3" do |master3|
+        master3.vm.hostname = "-master3"
+        master3.vm.network "private_network", ip: "192.0.2.3"
+        #master3.vm.provision :shell, path: "launch-amb-master.sh"
     end
-    config.vm.define "mesosslave1" do |mesosslave1|
-        mesosslave1.vm.hostname = "mesos-slave1"
-        mesosslave1.vm.network "private_network", ip: "192.168.20.1"
-        #amb0.vm.provision :shell, path: "launch-amb-master.sh"
+    config.vm.define "slave1" do |slave1|
+        slave1.vm.hostname = "-slave1"
+        slave1.vm.network "private_network", ip: "192.0.2.51"
+        #slave1.vm.provision :shell, path: "launch-amb-master.sh"
     end
-    config.vm.define "mesosslave2" do |mesosslave2|
-        mesosslave2.vm.hostname = "mesos-slave2"
-        mesosslave2.vm.network "private_network", ip: "192.168.20.2"
-        #amb0.vm.provision :shell, path: "launch-amb-master.sh"
+    config.vm.define "slave2" do |slave2|
+        slave2.vm.hostname = "-slave2"
+        slave2.vm.network "private_network", ip: "192.0.2.52"
+        #slave2.vm.provision :shell, path: "launch-amb-master.sh"
     end
-    config.vm.define "mesosslave3" do |mesosslave3|
-        mesosslave3.vm.hostname = "mesos-slave3"
-        mesosslave3.vm.network "private_network", ip: "192.168.20.3"
-        #amb0.vm.provision :shell, path: "launch-amb-master.sh"
+    config.vm.define "slave3" do |slave3|
+        slave3.vm.hostname = "-slave3"
+        slave3.vm.network "private_network", ip: "192.0.2.53"
+        #slave3.vm.provision :shell, path: "launch-amb-master.sh"
 
-        mesosslave3.vm.provision :ansible do |ansible|
+        slave3.vm.provision :ansible do |ansible|
             ansible.groups = {
-                "master_nodes" => ["mesosmaster1", "mesosmaster2", "mesosmaster3"],
-                "slave_nodes" => ["mesosslave1", "mesosslave2", "mesosslave3"],
+                "master_nodes" => ["master1", "master2", "master3"],
+                "slave_nodes" => ["slave1", "slave2", "slave3"],
                 "all_groups:children" => [ "master_nodes", "slave_nodes"]
             }
             ansible.playbook = "ansible/cluster.yml"
