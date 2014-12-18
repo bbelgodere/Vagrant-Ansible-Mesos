@@ -1,0 +1,3 @@
+---
+- name: Install Mesosphere (Mesos-slave)
+  apt: name=mesos state=latest

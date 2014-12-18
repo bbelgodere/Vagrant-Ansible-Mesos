@@ -1,0 +1,3 @@
+---
+- name: Install Mesosphere (Zookeeper, Mesos-master, Marathon, Chronos)
+  apt: name=mesosphere state=latest
