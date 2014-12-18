@@ -1,3 +1,4 @@
+---
 - name: Provision common parts
   hosts: all
   sudo: yes
@@ -17,8 +18,3 @@
   roles:
     - mesosslave
 
-- name: Install cluster
-  hosts: master_nodes
-  sudo: yes
-  roles:
-    - hdpcluster
