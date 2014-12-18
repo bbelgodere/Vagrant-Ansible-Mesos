@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
         mesosslave3.vm.network "private_network", ip: "192.168.20.3"
         #amb0.vm.provision :shell, path: "launch-amb-master.sh"
 
-        mon.vm.provision :ansible do |ansible|
+        mesosslave3.vm.provision :ansible do |ansible|
             ansible.groups = {
                 "master_nodes" => ["mesosmaster1", "mesosmaster2", "mesosmaster3"],
                 "slave_nodes" => ["mesosslave1", "mesosslave2", "mesosslave3"],
