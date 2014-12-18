@@ -1,0 +1,13 @@
+---
+- name: Provision common parts
+  hosts: all
+  sudo: yes
+  roles:
+    - hostsfix
+    - common
+
+- name: Launch Mesos Master
+  hosts: master_nodes
+  sudo: yes
+  roles:
+    - mesosmaster

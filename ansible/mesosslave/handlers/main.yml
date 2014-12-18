@@ -1,0 +1,5 @@
+---
+# handlers file for mesos slave
+ - name: Start mesos-slave
+   shell: service mesos-slave restart
+   sudo: yes

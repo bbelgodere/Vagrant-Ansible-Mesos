@@ -1,0 +1,5 @@
+---
+# handlers file for mesos
+ - name: Start mesos-master
+   shell: service mesos-master restart
+   sudo: yes
