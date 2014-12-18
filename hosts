@@ -1,0 +1,6 @@
+192.168.10.1 mesos-master1
+192.168.10.2 mesos-master2
+192.168.10.3 mesos-master3
+192.168.20.1 mesos-slave1
+192.168.20.2 mesos-slave2
+192.168.20.3 mesos-slave3
