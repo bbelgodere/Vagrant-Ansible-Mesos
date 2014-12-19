@@ -1,6 +1,9 @@
 ---
 - name: Install Mesosphere (Zookeeper, Mesos-master, Marathon, Chronos)
-  apt: name=mesosphere state=latest
+  apt: pkg={{ item }} state=latest
+    with_items:
+      - mesosphere
+      - ntp
 
 # used for leader election amongst masters
 - name: Set ZooKeeper URL

@@ -1,8 +1,10 @@
 ---
 #Tasks for Slave nodes
 - name: Install Mesos (Mesos-slave)
-  apt: name=mesos state=latest
-
+  apt: pkg={{ item }} state=latest
+    with_items:
+      -mesos
+      -docker
 - name: Disable the Mesos Master service
   copy:
     content: "manual"
