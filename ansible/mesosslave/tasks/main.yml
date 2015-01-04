@@ -5,6 +5,8 @@
     with_items:
       -mesos
       -docker
+  sudo: yes$
+
 - name: Disable the Mesos Master service
   copy:
     content: "manual"

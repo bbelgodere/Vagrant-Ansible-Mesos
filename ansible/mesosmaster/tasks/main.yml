@@ -1,48 +1,57 @@
 ---
 - name: Install Mesosphere (Zookeeper, Mesos-master, Marathon, Chronos)
-  apt: pkg={{ item }} state=latest
-    with_items:
-      - mesosphere
-      - ntp
+  apt: pkg={{ item }}
+  with_items:
+    - mesosphere
+    - ntp
+  sudo: yes
 
 # used for leader election amongst masters
-- name: Set ZooKeeper URL
+- name: Set ZooKeeper URL for mesos
   copy:
     content: "{{zookeeper_url}}/mesos"
     dest: /etc/mesos/zk
     mode: 0644
   sudo: yes
 
- Tasks for Master nodes
-- name: Disable the Mesos Slave service
+- name: Set ZooKeeper ID
   copy:
-     content: "manual"
-     dest: /etc/init/mesos-slave.override
-     mode: 0644
+    content: "{{zookeeper_url}}/mesos"
+    dest: /etc/zookeeper/conf/myid
+    mode: 0644
   sudo: yes
 
+- name: Set ZooKeeper ID
+  copy:
+    content: "{{zoo_id}}"
+    dest: /etc/zookeeper/conf/myid
+    mode: 0644
+  sudo: yes
+
+- name: Create zookeeper config file
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+  sudo: yes
+
+# Tasks for Mesos Master nodes
 - name: Set Mesos Master hostname
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ansible_eth1.ipv4.address}}"
     dest: /etc/mesos-master/hostname
     mode: 0644
   sudo: yes
 
-
 - name: Set Mesos Master ip
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ansible_eth1.ipv4.address}}"
     dest: /etc/mesos-master/ip
     mode: 0644
   sudo: yes
 
-# The Mesos quorum value is based on the number of Mesos Masters. Take the
-# number of masters, divide by 2, and round-up to nearest integer. For example,
-# if there are 1 or 2 masters the quorum count is 1. If there are 3 or 4
-# masters then the quorum count is 2. For 5 or 6 masters it's 3 and so on.
-
 - name: Set Mesos Master quorum count
-  template: src=quorum.j2 dest=/etc/mesos-master/quorum mode=0644
+  copy:
+    content: "{{mesos_quorum}}"
+    dest: /etc/mesos-master/quorum
+    mode: 0644
   sudo: yes
 
 - name: Set Mesos Master Cluster name
@@ -53,4 +62,29 @@
   sudo: yes
   notify:
     - Start mesos-master
+
+# Tasks to Configure Marathon on the Master Servers
+- name: create the marathon conf directory
+  shell: sudo mkdir -p /etc/marathon/conf
+
+- name: Copy Mesos hostname to marathon conf
+  shell: sudo cp /etc/mesos-master/hostname /etc/marathon/conf
+
+- name: Copy ZK to Merathon conf
+  shell: sudo cp /etc/mesos/zk /etc/marathon/conf/master
+
+- name: Set ZooKeeper ID
+  copy:
+    content: "{{zookeeper_url}}/marathon"
+    dest: /etc/marathon/conf/zk
+    mode: 0644
+  sudo: yes
+
+#Configure Service Init Rules and Restart Services
+- name: Disable the Mesos Slave service
+  copy:
+    content: "manual"
+    dest: /etc/init/mesos-slave.override
+    mode: 0644
+  sudo: yes
 

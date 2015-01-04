@@ -1,0 +1,3 @@
+{% for host in groups['master_nodes'] %}
+   {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }}
+{% endfor %}

@@ -20,5 +20,6 @@
   sudo: yes
 
 - name: Determine Linux distribution distributor$
-  shell: apt-get update -y
+  apt: update_cache=yes
+  #shell: apt-get update -y
   sudo: yes
