@@ -83,3 +83,4 @@
     - Start mesos-master
     - Start zookeeper
     - Start marathon
+    - Start chronos

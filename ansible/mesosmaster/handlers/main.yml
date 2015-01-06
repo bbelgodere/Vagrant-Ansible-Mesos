@@ -1,7 +1,7 @@
 ---
 # handlers file for mesos
 - name: Start mesos-master
-  service: name=mesos-slave state=restarted
+  service: name=mesos-master state=restarted
   sudo: yes
 
 - name: Stop mesos-slave
@@ -13,5 +13,9 @@
   sudo: yes
 
 - name: Start marathon
-  service: name=marathon state=stopped
+  service: name=marathon state=started
+  sudo: yes
+
+- name: Start chronos
+  service: name=chronos state=started
   sudo: yes
