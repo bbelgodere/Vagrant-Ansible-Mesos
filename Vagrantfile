@@ -17,17 +17,17 @@ Vagrant.configure(2) do |config|
 
     config.vm.define "master1" do |master1|
         master1.vm.hostname = "master1"
-        master1.vm.network "private_network", ip: "192.0.3.1"
+        master1.vm.network "private_network", ip: "192.0.3.11"
         #master1.vm.provision :shell, path: "launch-master.sh"
     end
     config.vm.define "master2" do |master2|
         master2.vm.hostname = "master2"
-        master2.vm.network "private_network", ip: "192.0.3.2"
+        master2.vm.network "private_network", ip: "192.0.3.12"
         #master2.vm.provision :shell, path: "launch-master.sh"
     end
     config.vm.define "master3" do |master3|
         master3.vm.hostname = "master3"
-        master3.vm.network "private_network", ip: "192.0.3.3"
+        master3.vm.network "private_network", ip: "192.0.3.13"
         #master3.vm.provision :shell, path: "launch-master.sh"
     end
     config.vm.define "slave1" do |slave1|
