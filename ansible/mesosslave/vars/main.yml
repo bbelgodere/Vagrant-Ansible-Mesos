@@ -1,0 +1,1 @@
+zookeeper_url: "zk://{% for host in groups['master_nodes'] %}{{ hostvars[host]['ansible_eth1']['ipv4']['address'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}"

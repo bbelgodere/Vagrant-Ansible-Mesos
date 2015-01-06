@@ -1,8 +1,8 @@
-tf not         loop.last %},ickTime=2000
+tickTime=2000
 dataDir=/var/lib/zookeeper/
 clientPort={{ zookeeper_client_port }}
 initLimit=5
 syncLimit=2
 {% for host in groups['master_nodes'] %}
-server.{{ host | regex_replace('master', '')}}={{hostvars[host]['ansible_eth1']['ipv4']['address'] }}:{{ zookeeper_leader_port }}:{{ zookeeper_election_port }}
+server.{{ host | regex_replace('\D*', '')}}={{hostvars[host]['ansible_eth1']['ipv4']['address'] }}:{{ zookeeper_leader_port }}:{{ zookeeper_election_port }}
 {% endfor %}

@@ -14,14 +14,7 @@
     mode: 0644
   sudo: yes
 
-- name: Set ZooKeeper ID
-  copy:
-    content: "{{zookeeper_url}}/mesos"
-    dest: /etc/zookeeper/conf/myid
-    mode: 0644
-  sudo: yes
-
-- name: Set ZooKeeper ID
+- name: Set ZooKeeperID
   copy:
     content: "{{zoo_id}}"
     dest: /etc/zookeeper/conf/myid
@@ -60,8 +53,6 @@
     dest: /etc/mesos-master/cluster
     mode: 0644
   sudo: yes
-  notify:
-    - Start mesos-master
 
 # Tasks to Configure Marathon on the Master Servers
 - name: create the marathon conf directory
@@ -73,7 +64,7 @@
 - name: Copy ZK to Merathon conf
   shell: sudo cp /etc/mesos/zk /etc/marathon/conf/master
 
-- name: Set ZooKeeper ID
+- name: Set ZooKeeper address
   copy:
     content: "{{zookeeper_url}}/marathon"
     dest: /etc/marathon/conf/zk
@@ -87,4 +78,8 @@
     dest: /etc/init/mesos-slave.override
     mode: 0644
   sudo: yes
-
+  notify:
+    - Stop mesos-slave
+    - Start mesos-master
+    - Start zookeeper
+    - Start marathon

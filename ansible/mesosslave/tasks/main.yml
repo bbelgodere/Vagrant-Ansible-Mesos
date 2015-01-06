@@ -2,10 +2,10 @@
 #Tasks for Slave nodes
 - name: Install Mesos (Mesos-slave)
   apt: pkg={{ item }} state=latest
-    with_items:
-      -mesos
-      -docker
-  sudo: yes$
+  with_items:
+    - mesos
+    - docker.io
+  sudo: yes
 
 - name: Disable the Mesos Master service
   copy:
@@ -13,6 +13,17 @@
     dest: /etc/init/mesos-master.override
     mode: 0644
   sudo: yes
+  notify:
+    - Stop mesos-master
+
+- name: Disable the zookeeper service
+  copy:
+    content: "manual"
+    dest: /etc/init/zookeeper.override
+    mode: 0644
+  sudo: yes
+  notify:
+    - Stop zookeeper
 
 # used for leader election amongst masters
 - name: Set ZooKeeper URL
@@ -24,16 +35,29 @@
 
 - name: Set Mesos Slave hostname
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ansible_eth1.ipv4.address}}"
     dest: /etc/mesos-slave/hostname
     mode: 0644
   sudo: yes
 
-
 - name: Set Mesos Slave ip
   copy:
-    content: "{{mesos_local_address}}"
+    content: "{{ansible_eth1.ipv4.address}}"
     dest: /etc/mesos-slave/ip
+    mode: 0644
+  sudo: yes
+
+- name: Update slave configuration to specify the use of the Docker containerizer
+  copy:
+    content: "docker,mesos"
+    dest: /etc/mesos-slave/containerizers
+    mode: 0644
+  sudo: yes
+
+- name: Increase the executor timeout
+  copy:
+    content: "5mins"
+    dest: /etc/mesos-slave/executor_registration_timeout
     mode: 0644
   sudo: yes
 

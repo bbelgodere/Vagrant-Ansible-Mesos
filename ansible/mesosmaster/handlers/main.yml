@@ -1,5 +1,17 @@
 ---
 # handlers file for mesos
- - name: Start mesos-master
-   shell: service mesos-master restart
-   sudo: yes
+- name: Start mesos-master
+  service: name=mesos-slave state=restarted
+  sudo: yes
+
+- name: Stop mesos-slave
+  service: name=mesos-slave state=stopped
+  sudo: yes
+
+- name: Start zookeeper
+  service: name=zookeeper state=restarted
+  sudo: yes
+
+- name: Start marathon
+  service: name=marathon state=stopped
+  sudo: yes
