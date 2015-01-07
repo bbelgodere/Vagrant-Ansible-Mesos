@@ -6,4 +6,5 @@ zookeeper_election_port: "3888"
 mesos_hostname: "{{ansible_hostname}}"
 mesos_local_address: "{{ansible_eth1.ipv4.address}}"
 zoo_id: "{{ansible_hostname | regex_replace('master','')}}"
-zookeeper_url: "zk://{% for host in groups['master_nodes'] %}{{ hostvars[host]['ansible_eth1']['ipv4']['address'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
+zookeeper_hosts: "{% for host in groups['master_nodes'] %}{{ hostvars[host]['ansible_eth1']['ipv4']['address'] }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
+zookeeper_url: "zk://{{zookeeper_hosts}}

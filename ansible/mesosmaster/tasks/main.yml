@@ -58,16 +58,39 @@
 - name: create the marathon conf directory
   shell: sudo mkdir -p /etc/marathon/conf
 
-- name: Copy Mesos hostname to marathon conf
-  shell: sudo cp /etc/mesos-master/hostname /etc/marathon/conf
+- name: set Mesos hostname to marathon conf
+  copy:
+    content: "{{ansible_eth1.ipv4.address}}"
+    dest: /etc/mesos-master/hostname
+    mode: 0644
+  sudo: yes
 
 - name: Copy ZK to Merathon conf
-  shell: sudo cp /etc/mesos/zk /etc/marathon/conf/master
+  copy:
+    content: "{{zookeeper_url}}/mesos"
+    dest: /etc/mesos/zk
+    mode: 0644
+  sudo: yes
 
 - name: Set ZooKeeper address
   copy:
     content: "{{zookeeper_url}}/marathon"
     dest: /etc/marathon/conf/zk
+    mode: 0644
+  sudo: yes
+
+# Tasks to Configure Chronos on the Master Servers
+- name: set Master to chronos conf
+  copy:
+    content: "{{zookeeper_url}}/mesos"
+    dest: /etc/chronos/master
+    mode: 0644
+  sudo: yes
+
+- name: set zookeeper hosts to chronos conf
+  copy:
+    content: "{{zookeeper_hosts}}"
+    dest: /etc/chronos/zk_hosts
     mode: 0644
   sudo: yes
 
