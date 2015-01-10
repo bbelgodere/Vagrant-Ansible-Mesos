@@ -1,0 +1,9 @@
+{
+    "id": "hello2",
+    "cmd": "echo hello; sleep 10",
+    "mem": 16,
+    "cpus": 0.1,
+    "instances": 1,
+    "disk": 0.0,
+    "ports": [0]
+}
